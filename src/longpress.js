@@ -1,20 +1,28 @@
 import WeakMatrix from './WeakMatrix';
-const LONG_PRESS_DELAY = 1500;
+
+const DEBUG = true;
+const LOG_PREFIX = '[longpress]';
+const LONG_PRESS_DELAY = 500;
+const MAX_X_DISTANCE = 10;
+const MAX_Y_DISTANCE = 10;
 
 const weakMatrix = new WeakMatrix();
 
 export function addLongPressListener(element, eventHandler) {
-  console.log('[longpress] addLongPressListener', element, eventHandler);
+  if (DEBUG) console.log(LOG_PREFIX, 'addLongPressListener', element, eventHandler);
+
   let timer;
   let originalEvent;
   let customEvent;
+  let initialPoint = [];
 
   element.addEventListener('mousedown', startHandler);
   element.addEventListener('touchstart', startHandler);
 
   function dispatchEvent() {
-    // stopHandler();
     customEvent = new originalEvent.constructor('longpress', {
+      ...originalEvent,
+
       bubbles: true,
       cancelable: true,
 
@@ -24,6 +32,7 @@ export function addLongPressListener(element, eventHandler) {
         clientY: originalEvent.clientY,
         originalEvent,
       },
+
 
       // add coordinate data that would typically acompany a touch/click event
       clientX: originalEvent.clientX,
@@ -37,11 +46,11 @@ export function addLongPressListener(element, eventHandler) {
     });
 
     //dispatch longpress event
-    console.log('dispatch longpress', customEvent);
+    if (DEBUG) console.log(LOG_PREFIX, 'dispatch longpress', customEvent);
     eventHandler.call(element, customEvent);
 
     if (customEvent.defaultPrevented) {
-      console.log('prevented default');
+      if (DEBUG) console.log(LOG_PREFIX, 'prevented default');
       originalEvent.preventDefault(); // prevent default action
 
       // suppress the next click event if e.preventDefault() was called in long-press handler
@@ -52,69 +61,106 @@ export function addLongPressListener(element, eventHandler) {
         e.preventDefault();
         e.stopPropagation();
       }, true);
+
+      stopHandler(originalEvent);
     }
   }
 
   function startHandler(e) {
-    console.log('startHandler', e);
+    if (DEBUG) console.log(LOG_PREFIX, 'startHandler', e);
+
     originalEvent = e;
     timer = setTimeout(dispatchEvent, LONG_PRESS_DELAY);
 
     element.addEventListener('mouseup', stopHandler);
-    element.addEventListener('mouseleave', stopHandler);
+    element.addEventListener('mouseleave', cancelHandler);
+    element.addEventListener('mousemove', moveHandler);
+
     element.addEventListener('touchend', stopHandler);
     element.addEventListener('touchcancel', cancelHandler);
+    element.addEventListener('touchmove', moveHandler);
+
+    initialPoint = [e.clientX ?? e.touches[0].clientX, e.clientY ?? e.touches[0].clientY];
   }
 
-  function stopHandler(e) {
-    console.log('stopHandler', e);
-    clearTimeout(timer);
-    element.removeEventListener('mouseup', stopHandler);
-    element.removeEventListener('mouseleave', stopHandler);
-    element.removeEventListener('touchend', stopHandler);
-    element.removeEventListener('touchcancel', cancelHandler);
-    if (customEvent?.defaultPrevented) {
-      console.log('stopHandler prevented default 2');
-      e.preventDefault();
-      e.returnValue = false;
-      clearDocumentSelection();
+  function moveHandler(e) {
+    if (DEBUG) console.log(LOG_PREFIX, 'moveHandler', e);
+
+    const x = e.clientX ?? e.touches[0].clientX;
+    const y = e.clientY ?? e.touches[0].clientY;
+
+    // cancel long-press if the user has moved too far
+    if (Math.abs(x - initialPoint[0]) > MAX_X_DISTANCE || Math.abs(y - initialPoint[1]) > MAX_Y_DISTANCE) {
+      if(DEBUG) console.log(LOG_PREFIX, 'too far, canceled!');
+      stopHandler(e);
     }
   }
 
-  function cancelHandler(e) {
-    console.log('cancelHandler', e);
+  function stopHandler(e) {
+    if (DEBUG) console.log(LOG_PREFIX, 'stopHandler', e);
     clearTimeout(timer);
+
+    if (customEvent?.defaultPrevented) {
+      if (DEBUG) console.log(LOG_PREFIX, 'stopHandler defaultPrevented', customEvent);
+      e.preventDefault();
+      e.returnValue = false;
+      clearIosSelection();
+    }
+
+    element.removeEventListener('mouseup', stopHandler);
+    element.removeEventListener('mouseleave', cancelHandler);
+    element.removeEventListener('mousemove', moveHandler);
+    element.removeEventListener('touchend', stopHandler);
+    element.removeEventListener('touchcancel', cancelHandler);
+    element.removeEventListener('touchmove', moveHandler);
   }
 
-  weakMatrix.set(element, eventHandler, { timer, startHandler, stopHandler, cancelHandler });
+  function cancelHandler(e) {
+    if (DEBUG) console.log(LOG_PREFIX, 'cancelHandler', e);
+    clearTimeout(timer);
+
+    element.removeEventListener('mouseup', stopHandler);
+    element.removeEventListener('mouseleave', stopHandler);
+    element.removeEventListener('mousemove', cancelHandler);
+    element.removeEventListener('touchend', stopHandler);
+    element.removeEventListener('touchcancel', cancelHandler);
+    element.removeEventListener('touchmove', moveHandler);
+  }
+
+  weakMatrix.set(element, eventHandler, { timer, startHandler, stopHandler, cancelHandler, moveHandler });
 }
 
 export function removeLongPressListener(element, eventHandler) {
   const event = weakMatrix.get(element, eventHandler);
-  if(event) {
-    const { timer, startHandler, stopHandler, cancelHandler } = event;
+  if (event) {
     weakMatrix.delete(element, eventHandler);
-    clearTimeout(timer);
+    const { timer, startHandler, stopHandler, cancelHandler, moveHandler } = event;
+    // clear mouse event listeners
     element.removeEventListener('mousedown', startHandler);
-    element.removeEventListener('touchstart', startHandler);
     element.removeEventListener('mouseup', stopHandler);
-    element.removeEventListener('mouseleave', stopHandler);
+    element.removeEventListener('mouseleave', cancelHandler);
+    element.removeEventListener('mousemove', moveHandler);
+    // clear touch event listeners
+    element.removeEventListener('touchstart', startHandler);
     element.removeEventListener('touchend', stopHandler);
     element.removeEventListener('touchcancel', cancelHandler);
+    element.removeEventListener('touchmove', moveHandler);
+    // clear timeout
+    clearTimeout(timer);
   }
 
 }
 
-function clearDocumentSelection() {
-  console.log('clearSelection');
-  if (document.selection) {
-    document.selection.empty();
-  } else if (window.getSelection) {
-    window.getSelection().removeAllRanges();
-  }
-  document.body.style.webkitUserSelect = 'none';
+function clearIosSelection() {
+  if (DEBUG) console.log(LOG_PREFIX, 'clearSelection');
+  //   const c = document.documentElement.style.webkitUserSelect;
+  document.documentElement.style.webkitUserSelect = 'none';
+  document.documentElement.style.mozUserSelect = 'none';
+  document.documentElement.style.userSelect = 'none';
   setTimeout(() => {
-    document.body.style.webkitUserSelect = '';
+    document.documentElement.style.webkitUserSelect = '';
+    document.documentElement.style.mozUserSelect = '';
+    document.documentElement.style.userSelect = '';
   }, 500);
 }
 
