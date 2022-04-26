@@ -16,6 +16,8 @@
 
 Headline description
 
+Demo: https://victornpb.github.io/vue-contextify/
+
 ## Installation
 
 ### NPM
