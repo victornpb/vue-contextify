@@ -1,9 +1,8 @@
 import { registerMenu, unregisterMenu } from './bridge.js';
-const DEBUG = false;
-const LOG_PREFIX = '[VContextProvider]';
+import { DEBUG, LOG_PREFIX, COMPONENT_NAME } from './constants';
 
 export default {
-  name: 'VContextProvider',
+  name: COMPONENT_NAME,
   props: {
     name: {
       type: String,

@@ -1,5 +1,4 @@
-const DEBUG = false;
-const LOG_PREFIX = '[VContext bridge]';
+import { DEBUG, LOG_PREFIX } from './constants';
 
 const contextMenuInstances = new Map();
 

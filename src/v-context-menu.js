@@ -1,8 +1,7 @@
 
 import { triggerMenu } from './bridge.js';
 import { addLongPressListener, removeLongPressListener } from './longpress.js';
-const DEBUG = false;
-const LOG_PREFIX = '[VContextDirective]';
+import { DEBUG, LOG_PREFIX, DIRECTIVE_NAME } from './constants';
 
 const stateMap = new WeakMap(); // store nodes using the directive, HTMLDocument as key
 
@@ -23,6 +22,7 @@ function eventHandler(e) {
 }
 
 export default {
+  name: DIRECTIVE_NAME,
   bind(el, binding) {
     if (DEBUG) console.log(LOG_PREFIX, 'bind directive', el, binding);
     const state = newState(binding);

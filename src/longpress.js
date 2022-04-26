@@ -1,6 +1,6 @@
+import { DEBUG } from './constants';
 import WeakMatrix from './WeakMatrix';
 
-const DEBUG = true;
 const LOG_PREFIX = '[longpress]';
 const LONG_PRESS_DELAY = 500;
 const MAX_X_DISTANCE = 10;

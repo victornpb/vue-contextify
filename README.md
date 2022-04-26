@@ -26,12 +26,12 @@ Headline description
 
 <!-- Output table (auto generated do not modify) -->
 
-| File                          | Module Type | Transpiled | Source Maps |
-|-------------------------------|-------------|------------|-------------|
+| File                        | Module Type | Transpiled | Source Maps |
+|-----------------------------|-------------|------------|-------------|
 | dist/vue-contextify.esm.mjs | esm         | No         | No          |
-| dist/vue-contextify.cjs.js  | cjs         | Yes        | No          |
-| dist/vue-contextify.esm.js  | esm         | Yes        | No          |
-| dist/vue-contextify.js      | umd         | Yes        | No          |
+| dist/vue-contextify.cjs.js  | cjs         | Yes        | Yes         |
+| dist/vue-contextify.esm.js  | esm         | Yes        | Yes         |
+| dist/vue-contextify.js      | umd         | Yes        | Yes         |
 
 <!-- END -->
 
