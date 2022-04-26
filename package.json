@@ -1,7 +1,7 @@
 {
   "name": "vue-contextify",
   "nameFull": "VueContextify",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Vue plugin for easily adding context menus to your application",
   "license": "MIT",
   "engines": {
