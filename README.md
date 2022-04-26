@@ -1,11 +1,18 @@
 # vue-contextify
 
-![Node](https://img.shields.io/node/v/vue-contextify.svg?style=flat-square)
-[![NPM](https://img.shields.io/npm/v/vue-contextify.svg?style=flat-square)](https://www.npmjs.com/package/vue-contextify)
-[![Travis](https://img.shields.io/travis/victornpb/vue-contextify/master.svg?style=flat-square)](https://travis-ci.org/victornpb/vue-fast-tooltip)
-[![David](https://img.shields.io/david/victornpb/vue-fast-tooltip.svg?style=flat-square)](https://david-dm.org/victornpb/vue-fast-tooltip)
-[![Coverage Status](https://img.shields.io/coveralls/victornpb/vue-fast-tooltip.svg?style=flat-square)](https://coveralls.io/github/victornpb/vue-fast-tooltip)
-[![NPM](https://img.shields.io/npm/dt/vue-fast-tooltip.svg?style=flat-square)](https://www.npmjs.com/package/vue-fast-tooltip)
+<!-- badge -->
+[![LICENSE](https://img.shields.io/github/license/victornpb/vue-contextify?style=flat-square)](LICENSE)
+[![Node](https://img.shields.io/node/v/vue-contextify.svg?style=flat-square)](package.json)
+[![CodeFactor](https://www.codefactor.io/repository/github/victornpb/vue-contextify/badge?style=flat-square)](https://www.codefactor.io/repository/github/victornpb/vue-contextify)
+
+[![Coverage Status](https://img.shields.io/coveralls/victornpb/vue-contextify.svg?style=flat-square)](https://coveralls.io/github/victornpb/vue-contextify)
+[![Travis](https://img.shields.io/travis/victornpb/vue-contextify/master.svg?style=flat-square)](https://travis-ci.org/victornpb/vue-contextify)
+
+[![Version](https://img.shields.io/npm/v/vue-contextify.svg?style=flat-square)](https://www.npmjs.com/package/vue-contextify)
+[![Downloads](https://img.shields.io/npm/dt/vue-contextify.svg?style=flat-square)](https://www.npmjs.com/package/vue-contextify)
+[![](https://img.shields.io/bundlephobia/minzip/tiny-dedent?style=flat-square)](https://www.npmjs.com/package/vue-contextify)
+[![](https://img.shields.io/tokei/lines/github/victornpb/vue-contextify?style=flat-square)](https://www.npmjs.com/package/vue-contextify)
+<!-- endbadge -->
 
 Headline description
 
