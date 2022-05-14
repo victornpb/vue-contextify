@@ -24,15 +24,16 @@
     "start": "npm run dev",
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "prebuild": "rimraf dist",
     "test": "npm run lint && npm run build",
+    "prebuild": "rimraf dist",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "release": "np --any-branch",
     "vue": "npm run serve --prefix ./demo/vue",
     "vue-prod": "npm run serve-prod --prefix ./demo/vue",
     "demo": "concurrently \"npm run dev\" \"npm run vue\"",
-    "demo-prod": "npm run build && concurrently \"npm run dev\" \"npm run vue-prod\""
+    "demo-prod": "npm run build && concurrently \"npm run dev\" \"npm run vue-prod\"",
+    "version": "npm run build",
+    "release": "np --any-branch"
   },
   "files": [
     "dist"
