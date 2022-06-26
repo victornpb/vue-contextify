@@ -14,6 +14,8 @@
 [![](https://img.shields.io/tokei/lines/github/victornpb/vue-contextify?style=flat-square)](https://www.npmjs.com/package/vue-contextify)
 <!-- endbadge -->
 
+![vue-contextify](https://user-images.githubusercontent.com/3372598/175796670-e4cfe988-08e8-4519-88fc-435bd2a7c372.jpg)
+
 A Vue plugin for easily adding context menus to your application
 
 Demo: https://victornpb.github.io/vue-contextify/
